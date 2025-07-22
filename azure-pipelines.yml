@@ -18,32 +18,42 @@ stages:
 
     steps:
     - task: TerraformInstaller@1
-      displayName: TF init
+      displayName: TF install
       inputs:
         terraformVersion: 'latest'
 
-- task: TerraformTask@5
-  inputs:
-    provider: 'azurerm'
-    command: 'init'
-    workingDirectory: '$(System.DefaultWorkingDirectory)/'
-    backendServiceArm: '$(service_Connection)'
-    backendAzureRmResourceGroupName: '$(backendResourceGroup)'
-    backendAzureRmStorageAccountName: '$(backendStorageAccount)'
-    backendAzureRmContainerName: '$(backendContainer)'
-    backendAzureRmKey: '$(backendStateFile)'
+    - task: TerraformTask@5
+      displayName: TF Init
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/'
+        backendServiceArm: '$(service_Connection)'
+        backendAzureRmResourceGroupName: '$(backendResourceGroup)'
+        backendAzureRmStorageAccountName: '$(backendStorageAccount)'
+        backendAzureRmContainerName: '$(backendContainer)'
+        backendAzureRmKey: '$(backendStateFile)'
 
-- task: TerraformTask@5
-  inputs:
-    provider: 'azurerm'
-    command: 'plan'
-    workingDirectory: '$(System.DefaultWorkingDirectory)/'
-    commandOptions: '-var-file="variable.tfvars"'
-    environmentServiceNameAzureRM: '$(service_Connection)'
-- task: TerraformTask@5
-  inputs:
-    provider: 'azurerm'
-    command: 'apply'
-    workingDirectory: '$(System.DefaultWorkingDirectory)/'
-    commandOptions: '-var-file="variable.tfvars"'
-    environmentServiceNameAzureRM: '$(service_Connection)'
+    - task: TerraformTask@5
+      displayName: TF Validate
+      inputs:
+        provider: 'azurerm'
+        command: 'validate'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/'
+
+    - task: TerraformTask@5
+      displayName: TF Plan
+      inputs:
+        provider: 'azurerm'
+        command: 'plan'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/'
+        commandOptions: '-var-file="variable.tfvars"'
+        environmentServiceNameAzureRM: '$(service_Connection)'
+    - task: TerraformTask@5
+      displayName: TF Apply
+      inputs:
+        provider: 'azurerm'
+        command: 'apply'
+        workingDirectory: '$(System.DefaultWorkingDirectory)/'
+        commandOptions: '-var-file="variable.tfvars"'
+        environmentServiceNameAzureRM: '$(service_Connection)'
