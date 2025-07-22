@@ -11,7 +11,6 @@ pool:
 
 variables:
 - group: TerraformBackendConfig
-- group: Input_Variables
 
 steps:
 - task: TerraformInstaller@1
@@ -22,6 +21,7 @@ steps:
   inputs:
     provider: 'azurerm'
     command: 'init'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/'
     backendServiceArm: '$(service_Connection)'
     backendAzureRmResourceGroupName: '$(backendResourceGroup)'
     backendAzureRmStorageAccountName: '$(backendStorageAccount)'
@@ -31,6 +31,14 @@ steps:
 - task: TerraformTask@5
   inputs:
     provider: 'azurerm'
+    command: 'plan'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/'
+    commandOptions: '-var-file="variable.tfvars"'
+    environmentServiceNameAzureRM: '$(service_Connection)'
+- task: TerraformTask@5
+  inputs:
+    provider: 'azurerm'
     command: 'apply'
-    commandOptions: '--auto-approve'
+    workingDirectory: '$(System.DefaultWorkingDirectory)/'
+    commandOptions: '-var-file="variable.tfvars"'
     environmentServiceNameAzureRM: '$(service_Connection)'
