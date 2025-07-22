@@ -17,10 +17,20 @@ stages:
     pool:
       vmImage: ubuntu-latest
     steps:
+    
     - task: TerraformInstaller@1
       displayName: TF install
       inputs:
         terraformVersion: 'latest'
+
+    - task: replacetokens@6
+      inputs:
+        root: '$(System.DefaultWorkingDirectory)/'
+        sources: 'Storage_repo/variable.tfvars'
+        encoding: auto
+        tokenPattern: default
+        addBOM: true
+               
 
     - task: TerraformTask@5
       displayName: TF Init
