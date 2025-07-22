@@ -26,10 +26,14 @@ stages:
     - task: replacetokens@6
       inputs:
         root: '$(System.DefaultWorkingDirectory)/'
-        sources: 'diwanesahil/Storage_repo/variable.tfvars'
-        encoding: auto
-        tokenPattern: default
-        addBOM: true
+        sources: 'variable.tfvars'
+        encoding: 'auto'
+        writeBOM: true
+        actionOnMissing: 'warn'
+        keepToken: false
+        tokenPrefix: '#{'
+        tokenSuffix: '}#'
+        
                
 
     - task: TerraformTask@5
