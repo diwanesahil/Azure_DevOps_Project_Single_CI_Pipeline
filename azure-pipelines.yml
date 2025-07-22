@@ -6,16 +6,21 @@
 trigger:
 - main
 
-pool:
-  vmImage: ubuntu-latest
+stages:
+- stage: Build
+  jobs:
+  - job: Build
+    pool:
+      vmImage: ubuntu-latest
 
-variables:
-- group: TerraformBackendConfig
+    variables:
+    - group: TerraformBackendConfig
 
-steps:
-- task: TerraformInstaller@1
-  inputs:
-    terraformVersion: 'latest'
+    steps:
+    - task: TerraformInstaller@1
+      displayName: TF init
+      inputs:
+        terraformVersion: 'latest'
 
 - task: TerraformTask@5
   inputs:
