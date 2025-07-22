@@ -6,16 +6,15 @@
 trigger:
 - main
 
+variables:
+- group: TerraformBackendConfig
+
 stages:
 - stage: Build
   jobs:
   - job: Build
     pool:
       vmImage: ubuntu-latest
-
-    variables:
-    - group: TerraformBackendConfig
-
     steps:
     - task: TerraformInstaller@1
       displayName: TF install
