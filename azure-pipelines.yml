@@ -26,7 +26,7 @@ stages:
     - task: replacetokens@6
       inputs:
         root: '$(System.DefaultWorkingDirectory)/'
-        sources: 'Storage_repo/variable.tfvars'
+        sources: 'diwanesahil/Storage_repo/variable.tfvars'
         encoding: auto
         tokenPattern: default
         addBOM: true
