@@ -9,15 +9,13 @@ Used Variable groups to pass the values for remote backend. Also used replaced t
 - **Variable.tf**: Declares input variables for resource group name, location, and storage account name.
 - **variable.tfvars**: Provides values for the variables defined in `Variable.tf`. Uses pipeline variable substitution for CI/CD.
 - **storage.tf**: Defines resources for Azure Resource Group and Storage Account using the provided variables.
-- **vnet.tf**: (Currently commented out) Intended for defining an Azure Virtual Network resource. Uncomment and update as needed.
 - **azure-pipelines.yml**: Azure DevOps pipeline for automating Terraform operations (init, validate, plan, apply). Uses the `TerraformTask@5` task—ensure the correct extension is installed in Azure DevOps.
 
 ## Usage Notes
 
 1. Update `variable.tfvars` with your actual values or ensure pipeline variables are set in Azure DevOps.
 2. Make sure the Azure DevOps organization has the required Terraform extension installed for pipeline compatibility.
-3. Uncomment and configure `vnet.tf` if you need to deploy a virtual network.
-4. The pipeline expects a service connection and backend configuration variables to be set in Azure DevOps.
+3. The pipeline expects a service connection and backend configuration variables to be set in Azure DevOps.
 
 ## Troubleshooting
 
@@ -29,7 +27,7 @@ Used Variable groups to pass the values for remote backend. Also used replaced t
 
 1. **Trigger**: The pipeline is triggered on changes to the `main` branch.
 
-2. **Variables**: Uses a variable group `TerraformBackendConfig` for backend and service connection settings. These variables must be defined in Azure DevOps.
+2. **Variables**: Uses a variable group `TerraformBackendConfig` and 'Input_Variables' for remote backend, input variables and service connection settings. These variables must be defined in Azure DevOps.
 
 3. **Stage: Build**: Contains a single job named `Build` that runs on an Ubuntu agent.
 
@@ -39,7 +37,10 @@ Used Variable groups to pass the values for remote backend. Also used replaced t
 
 6. **TerraformTask@5 (Validate)**: Validates the Terraform configuration files to ensure syntax and configuration correctness.
 
-7. **TerraformTask@5 (Plan)**: Runs `terraform plan` to preview changes. Uses the Azure service connection for authentication.
+7. **TerraformTask@5 (Plan)**: Runs `terraform plan` to preview changes. Uses the Azure service connection for authentication and 'Input_Variables' group to replace the tokens for variable.tfvars file.
 
-8. **TerraformTask@5 (Apply)**: Applies the planned changes to Azure resources. Also uses the Azure service connection for authentication.
+8. **TerraformTask@5 (Apply)**: Applies the planned changes to Azure resources. Also uses the Azure service connection for authentication and 'Input_Variables' group to replace the tokens for variable.tfvars file.
 
+9. **replacetokens@6**: This task replace the token value from variable groups for variable.tfvras.
+
+8. **Script**: Script verifies the replaced tokens and shown them on console.
