@@ -61,6 +61,7 @@ stages:
         provider: 'azurerm'
         command: 'plan'
         workingDirectory: '$(System.DefaultWorkingDirectory)/'
+        commandOptions: '-var-file="variable.tfvars"'
         environmentServiceNameAzureRM: '$(service_Connection)'
     - task: TerraformTask@5
       displayName: TF Apply
@@ -68,4 +69,5 @@ stages:
         provider: 'azurerm'
         command: 'apply'
         workingDirectory: '$(System.DefaultWorkingDirectory)/'
+        commandOptions: '-var-file="variable.tfvars"'
         environmentServiceNameAzureRM: '$(service_Connection)'
