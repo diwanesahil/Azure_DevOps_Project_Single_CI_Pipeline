@@ -44,3 +44,5 @@ Used Variable groups to pass the values for remote backend. Also used replaced t
 9. **replacetokens@6**: This task replace the token value from variable groups for variable.tfvras.
 
 8. **Script**: Script verifies the replaced tokens and shown them on console.
+
+########
